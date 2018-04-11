@@ -26,11 +26,19 @@ export default class Application extends React.Component {
       myjson: {},
       titles: []
     };
+    this.setMyJSON = this.setMyJSON.bind(this);
+    this.setTitles = this.setTitles.bind(this);
   }
 
   setMyJSON(myjson){
-    setState({
+    this.setState({
       myjson: myjson
+    })
+  }
+
+  setTitles(titles){
+    this.setState({
+      titles: titles
     })
   }
 
@@ -41,7 +49,15 @@ export default class Application extends React.Component {
           <NavigationBar />
           {console.log("Application state", this.state)}
           <Switch>
-              <Route exact path="/" component={IndexPage}/>
+              <Route exact path="/" render={(props) => (
+                <IndexPage
+                  myjson={this.state.myjson}
+                  title={this.state.titles}
+                  setMyJSON={this.setMyJSON}
+                  setTitles={this.setTitles}
+                  {...props}
+                />
+              )}/>
               <Route exact path="/about" component={AboutPage}/>
               <Route component={NotFoundPage} />
           </Switch>

@@ -12,6 +12,11 @@ export default class NavigationBar extends React.Component {
         <Link to="/about">
           <h1>About Page</h1>
         </Link>
+        <input
+          type="text"
+          placeholder="Search"
+        >
+        </input>
       </div>
     );
   }

@@ -11,16 +11,21 @@ export default class IndexPage extends React.Component {
   }
 
 
-  componentDidMount(){
-    return fetch('http://localhost:8983/solr/ps4_games/select?fl=title&q=title:%22batman%22')
+
+
+  componentWillMount(){
+    return fetch('http://localhost:8983/solr/ps4_games/select?fl=title&q=title:*&rows=200')
      .then((response) => response.json())
      .then((responseJson) => {
-       console.log( responseJson.response.docs[0]);
-       let titles = this.getTitles(responseJson.response.docs)
+       //console.log( responseJson.response.docs);
+       this.props.setMyJSON(responseJson.response.docs);
+       let titles = this.getTitles(this.props.myjson)
+       this.props.setTitles(titles);
        this.setState({
          myjson: responseJson.response.docs,
          titles: titles
        });
+
        return responseJson
      })
      .catch((error) => {
@@ -32,7 +37,7 @@ export default class IndexPage extends React.Component {
 
   renderTitleLinks(){
     const listItems = this.state.titles.map((title) =>
-      <Link to="/">{title}</Link>
+      <Link to={"/" + title}>{title}</Link>
     );
     return listItems;
   }
@@ -45,6 +50,28 @@ export default class IndexPage extends React.Component {
     return titles;
   }
 
+  updateURL(event){
+    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title&q=title:'+event.target.value+'*&rows=200'
+    console.log(event.target.value)
+    fetch(url)
+     .then((response) => response.json())
+     .then((responseJson) => {
+       //console.log( responseJson.response.docs);
+       this.props.setMyJSON(responseJson.response.docs);
+       let titles = this.getTitles(this.props.myjson)
+       this.props.setTitles(titles);
+       this.setState({
+         myjson: responseJson.response.docs,
+         titles: titles
+       });
+
+       return responseJson
+     })
+     .catch((error) => {
+        console.error(error);
+      });
+  }
+
 
 
   render() {
@@ -52,6 +79,14 @@ export default class IndexPage extends React.Component {
     return (
       <div>
       <h1>Home Page</h1>
+      <input
+        type="text"
+        placeholder="Search"
+        onChange={this.updateURL.bind(this)}
+      >
+      </input>
+
+
       {console.log(this.state.titles)}
       {console.log("Props",this.props)}
       <div className="result-list">
