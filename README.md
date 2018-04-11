@@ -22,3 +22,4 @@
 - **Navigate into the cloned directory and run `npm install` to install all the required dependencies**
 - **Start the development server by running `npm start` and stop the server using `Ctrl-C`**
 - **Use Google Chrome to view site and make sure you have this plugin installed to be able to use CORS: 'https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi/related'**
+http://laurenthinoul.com/how-to-enable-cors-in-solr/

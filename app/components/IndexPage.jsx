@@ -12,7 +12,7 @@ export default class IndexPage extends React.Component {
 
 
   componentDidMount(){
-    return fetch('http://localhost:8983/solr/ps4_games/select?q=title:%22Kingdom%22')
+    return fetch('http://localhost:8983/solr/ps4_games/select?fl=title&q=title:%22batman%22')
      .then((response) => response.json())
      .then((responseJson) => {
        console.log( responseJson.response.docs[0]);
@@ -39,7 +39,7 @@ export default class IndexPage extends React.Component {
 
   getTitles(docs){
     let titles = []
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < docs.length; i++) {
       titles.push(docs[i].title[0]);
     }
     return titles;
@@ -53,7 +53,10 @@ export default class IndexPage extends React.Component {
       <div>
       <h1>Home Page</h1>
       {console.log(this.state.titles)}
-      {this.renderTitleLinks()}
+      {console.log("Props",this.props)}
+      <div className="result-list">
+        {this.renderTitleLinks()}
+      </div>
       </div>
     );
   }

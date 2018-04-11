@@ -20,11 +20,26 @@ import 'normalize.css/normalize.css';
 import '../styles/Application.scss';
 
 export default class Application extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      myjson: {},
+      titles: []
+    };
+  }
+
+  setMyJSON(myjson){
+    setState({
+      myjson: myjson
+    })
+  }
+
   render() {
     return (
       <BrowserRouter>
         <div id="app">
           <NavigationBar />
+          {console.log("Application state", this.state)}
           <Switch>
               <Route exact path="/" component={IndexPage}/>
               <Route exact path="/about" component={AboutPage}/>
