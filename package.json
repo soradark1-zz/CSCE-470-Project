@@ -18,7 +18,6 @@
     "jest": "^22.4.0",
     "node-sass": "^4.7.2",
     "normalize.css": "^8.0.0",
-    "path-loader": "^1.0.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",

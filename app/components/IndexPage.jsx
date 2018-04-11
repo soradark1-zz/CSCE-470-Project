@@ -1,14 +1,16 @@
 import React from 'react';
-import PathLoader from 'path-loader'
 
 export default class IndexPage extends React.Component {
 
   componentDidMount(){
-    fetch('https://facebook.github.io/react-native/movies.json')
+    fetch('http://localhost:8983/solr/ps4_games/select?fl=title&q=title:%22Kingdom%22')
    .then((response) => response.json())
    .then((responseJson) => {
-     console.log( responseJson.movies);
+     console.log( responseJson);
    })
+   .catch((error) => {
+      console.error(error);
+    });
   }
 
   render() {
