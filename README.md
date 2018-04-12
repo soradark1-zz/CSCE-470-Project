@@ -16,10 +16,9 @@
 - **webpack.prod.js** contains production-only [webpack] logic
 
 ## Setup a Development Environment
-
+- **If using Windows, install GitBash, which is link a unix terminal for windows**
 - **Install the latest [Node.js]**
 - **Clone the directory by running `git clone https://github.com/soradark1/CSCE-470-Project.git`**
 - **Navigate into the cloned directory and run `npm install` to install all the required dependencies**
 - **Start the development server by running `npm start` and stop the server using `Ctrl-C`**
-- **Use Google Chrome to view site and make sure you have this plugin installed to be able to use CORS: 'https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi/related'**
-http://laurenthinoul.com/how-to-enable-cors-in-solr/
+- **In order for the application to fetch data from Solr, you'll need to add these changes at this [link](http://laurenthinoul.com/how-to-enable-cors-in-solr/)**

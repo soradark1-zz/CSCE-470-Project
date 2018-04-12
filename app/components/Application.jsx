@@ -12,6 +12,7 @@ import NavigationBar from './NavigationBar.jsx';
 import AboutPage from './AboutPage.jsx';
 import IndexPage from './IndexPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
+import ResultsPage from './ResultsPage.jsx';
 
 // Normalize styling across all browsers
 import 'normalize.css/normalize.css';
@@ -31,6 +32,8 @@ export default class Application extends React.Component {
     this.setTitles = this.setTitles.bind(this);
   }
 
+
+
   setMyJSON(myjson){
     this.setState({
       myjson: myjson
@@ -47,18 +50,30 @@ export default class Application extends React.Component {
     return (
       <BrowserRouter>
         <div id="app">
-          <NavigationBar
-            myjson={this.state.myjson}
-            title={this.state.titles}
-            setMyJSON={this.setMyJSON}
-            setTitles={this.setTitles}
-          />
+          <Route render={(props) => (
+            <NavigationBar
+              myjson={this.state.myjson}
+              titles={this.state.titles}
+              setMyJSON={this.setMyJSON}
+              setTitles={this.setTitles}
+              {...props}
+              />
+            )}/>
           {console.log("Application state", this.state)}
           <Switch>
               <Route exact path="/" render={(props) => (
                 <IndexPage
                   myjson={this.state.myjson}
-                  title={this.state.titles}
+                  titles={this.state.titles}
+                  setMyJSON={this.setMyJSON}
+                  setTitles={this.setTitles}
+                  {...props}
+                />
+              )}/>
+              <Route exact path="/results" render={(props) => (
+                <ResultsPage
+                  myjson={this.state.myjson}
+                  titles={this.state.titles}
                   setMyJSON={this.setMyJSON}
                   setTitles={this.setTitles}
                   {...props}
