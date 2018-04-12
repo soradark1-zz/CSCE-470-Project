@@ -29,7 +29,9 @@ export default class NavigationBar extends React.Component {
 
   updateURL(event){
     event.preventDefault()
-    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title&q=title:' + event.target.value + '*&rows=200'
+    var query = event.target.value;
+    this.props.setQuery(query);
+    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title&q=title:' + query + '*&rows=200'
     console.log(event.target.value)
     fetch(url)
      .then((response) => response.json())
@@ -63,7 +65,9 @@ export default class NavigationBar extends React.Component {
         <input
           type="text"
           placeholder="Search"
+          value={this.props.query}
           onChange={this.updateURL.bind(this)}
+
         >
         </input>
         {this.state.redirect && (

@@ -15,6 +15,10 @@ export default class IndexPage extends React.Component {
     return listItems;
   }
 
+  rankTitles(){
+
+  }
+
   render() {
 
     return (
