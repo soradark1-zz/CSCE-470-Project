@@ -51,7 +51,7 @@ export default class IndexPage extends React.Component {
   }
 
   updateURL(event){
-    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title&q=title:'+event.target.value+'*&rows=200'
+    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title&q=title:' + event.target.value + '*&rows=200'
     console.log(event.target.value)
     fetch(url)
      .then((response) => response.json())

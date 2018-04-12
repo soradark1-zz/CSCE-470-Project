@@ -23,6 +23,7 @@ export default class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      serach_url: "",
       myjson: {},
       titles: []
     };
@@ -46,7 +47,12 @@ export default class Application extends React.Component {
     return (
       <BrowserRouter>
         <div id="app">
-          <NavigationBar />
+          <NavigationBar
+            myjson={this.state.myjson}
+            title={this.state.titles}
+            setMyJSON={this.setMyJSON}
+            setTitles={this.setTitles}
+          />
           {console.log("Application state", this.state)}
           <Switch>
               <Route exact path="/" render={(props) => (
