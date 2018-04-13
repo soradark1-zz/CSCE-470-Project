@@ -13,6 +13,7 @@ export default class IndexPage extends React.Component {
     return (
       <div>
       <h1>{this.props.match.params.title}</h1>
+      {console.log(this.props)}
       </div>
     );
   }

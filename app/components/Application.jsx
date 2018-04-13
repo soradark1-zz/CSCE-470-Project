@@ -88,9 +88,11 @@ export default class Application extends React.Component {
                   myjson={this.state.myjson}
                   titles={this.state.titles}
                   query={this.state.query}
+                  doc_ids={this.state.doc_ids}
                   setTitles={this.setTitles}
                   setMyJSON={this.setMyJSON}
                   setQuery={this.setQuery}
+                  setDocIDs={this.setDocIDs}
                   {...props}
                 />
               )}/>

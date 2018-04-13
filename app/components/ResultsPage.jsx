@@ -27,7 +27,7 @@ export default class ResultsPage extends React.Component {
         console.log('document #' + i + ' is ' + measure);
         ranked_titles.push([measure, titles[i]]);
     });
-    console.log(ranked_titles.sort().reverse());
+    console.log('ranked', ranked_titles.sort().reverse());
     return ranked_titles;
   }
 
