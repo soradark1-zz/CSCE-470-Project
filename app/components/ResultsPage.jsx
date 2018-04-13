@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import TfIdf from 'natural/lib/natural/tfidf/tfidf.js';
 
-export default class IndexPage extends React.Component {
+export default class ResultsPage extends React.Component {
   constructor(props) {
     super(props);
 

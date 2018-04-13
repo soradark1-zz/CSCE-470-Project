@@ -30,11 +30,13 @@ export default class Application extends React.Component {
     this.state = {
       query: "",
       myjson: {},
-      titles: []
+      titles: [],
+      doc_ids: []
     };
     this.setMyJSON = this.setMyJSON.bind(this);
     this.setTitles = this.setTitles.bind(this);
     this.setQuery = this.setQuery.bind(this);
+    this.setDocIDs = this.setDocIDs.bind(this);
   }
 
   setQuery(query){
@@ -55,6 +57,12 @@ export default class Application extends React.Component {
     })
   }
 
+  setDocIDs(doc_ids){
+    this.setState({
+      doc_ids: doc_ids
+    })
+  }
+
   render() {
     return (
       <HashRouter>
@@ -64,9 +72,11 @@ export default class Application extends React.Component {
               myjson={this.state.myjson}
               titles={this.state.titles}
               query={this.state.query}
+              doc_ids={this.state.doc_ids}
               setTitles={this.setTitles}
               setMyJSON={this.setMyJSON}
               setQuery={this.setQuery}
+              setDocIDs={this.setDocIDs}
               {...props}
               />
             )}/>

@@ -18,12 +18,19 @@ export default class NavigationBar extends React.Component {
     }
     return titles;
   }
+  getIds(docs){
+    let ids = []
+    for (var i = 0; i < docs.length; i++) {
+      ids.push(docs[i].id);
+    }
+    return ids;
+  }
 
   updateURL(event){
     event.preventDefault()
     var query = event.target.value;
-    this.props.setQuery(query);
-    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title&q=title:' + query.trim() + '&rows=200'
+    this.props.setQuery(query); //http://localhost:8983/solr/ps4_games/select?fl=title,id&q=title:Kingdom
+    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title,id&q=title:' + query.trim() + '&rows=200'
     console.log("TRIM",event.target.value.trim())
     fetch(url)
      .then((response) => response.json())
@@ -32,6 +39,8 @@ export default class NavigationBar extends React.Component {
        this.props.setMyJSON(responseJson.response.docs);
        let titles = this.getTitles(this.props.myjson)
        this.props.setTitles(titles);
+       let ids = this.getIds(this.props.myjson)
+       this.props.setDocIDs(ids);
        this.props.history.push(`/results`)
        return responseJson
      })
@@ -61,7 +70,6 @@ export default class NavigationBar extends React.Component {
           placeholder="Search"
           value={this.props.query}
           onChange={this.updateURL.bind(this)}
-
         >
         </input>
 
