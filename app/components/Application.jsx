@@ -3,13 +3,17 @@ import React from 'react';
 import {
   BrowserRouter,
   Route,
-  Switch
+  Switch,
+  browserHistory,
+  hashHistory,
+  HashRouter
 } from 'react-router-dom';
 
 import NavigationBar from './NavigationBar.jsx';
 
 // Load pages for routing
 import AboutPage from './AboutPage.jsx';
+import GamePage from './GamePage.jsx';
 import IndexPage from './IndexPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import ResultsPage from './ResultsPage.jsx';
@@ -53,7 +57,7 @@ export default class Application extends React.Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <div id="app">
           <Route render={(props) => (
             <NavigationBar
@@ -73,8 +77,32 @@ export default class Application extends React.Component {
                 <ResultsPage
                   myjson={this.state.myjson}
                   titles={this.state.titles}
-                  setMyJSON={this.setMyJSON}
+                  query={this.state.query}
                   setTitles={this.setTitles}
+                  setMyJSON={this.setMyJSON}
+                  setQuery={this.setQuery}
+                  {...props}
+                />
+              )}/>
+              <Route exact path="/results" render={(props) => (
+                <ResultsPage
+                  myjson={this.state.myjson}
+                  titles={this.state.titles}
+                  query={this.state.query}
+                  setTitles={this.setTitles}
+                  setMyJSON={this.setMyJSON}
+                  setQuery={this.setQuery}
+                  {...props}
+                />
+              )}/>
+              <Route path="/game/:title" render={(props) => (
+                <GamePage
+                  myjson={this.state.myjson}
+                  titles={this.state.titles}
+                  query={this.state.query}
+                  setTitles={this.setTitles}
+                  setMyJSON={this.setMyJSON}
+                  setQuery={this.setQuery}
                   {...props}
                 />
               )}/>
@@ -82,7 +110,7 @@ export default class Application extends React.Component {
               <Route component={NotFoundPage} />
           </Switch>
         </div>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }

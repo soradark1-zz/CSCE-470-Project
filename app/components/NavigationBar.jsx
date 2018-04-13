@@ -1,22 +1,14 @@
 import React from 'react';
 import '../styles/NavigationBar.scss';
 import { Link, Redirect } from 'react-router-dom';
+//https://gist.github.com/wassname/6bd1d58a31afbf960cbd35e3fc92be5a
+
 
 export default class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      redirect: false
-    }
+
   }
-
-  submitInput(e){
-    e.preventDefault()
-    this.setState({ redirect: true })
-  }
-
-
-
 
 
   getTitles(docs){
@@ -31,8 +23,8 @@ export default class NavigationBar extends React.Component {
     event.preventDefault()
     var query = event.target.value;
     this.props.setQuery(query);
-    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title&q=title:' + query + '*&rows=200'
-    console.log(event.target.value)
+    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title&q=title:' + query.trim() + '&rows=200'
+    console.log("TRIM",event.target.value.trim())
     fetch(url)
      .then((response) => response.json())
      .then((responseJson) => {
@@ -47,6 +39,8 @@ export default class NavigationBar extends React.Component {
         console.error(error);
       });
   }
+
+
 
 
 
@@ -70,9 +64,7 @@ export default class NavigationBar extends React.Component {
 
         >
         </input>
-        {this.state.redirect && (
-          <Redirect to='/'/>
-        )}
+
 
       </div>
     );
