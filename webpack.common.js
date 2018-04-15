@@ -12,6 +12,14 @@ module.exports = {
     filename: 'bundle.js'
   },
 
+  node: {
+    fs: 'empty'
+  },
+
+  devServer: {
+    historyApiFallback: true,
+  },
+
   module: {
     rules: [
       {

@@ -3,15 +3,21 @@ import React from 'react';
 import {
   BrowserRouter,
   Route,
-  Switch
+  Switch,
+  browserHistory,
+  hashHistory,
+  HashRouter
 } from 'react-router-dom';
 
 import NavigationBar from './NavigationBar.jsx';
 
 // Load pages for routing
 import AboutPage from './AboutPage.jsx';
+import GamePage from './GamePage.jsx';
 import IndexPage from './IndexPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
+import ResultsPage from './ResultsPage.jsx';
+var RegexpTokenizer = require('natural/lib/natural/tokenizers/regexp_tokenizer').RegexpTokenizer;
 
 // Normalize styling across all browsers
 import 'normalize.css/normalize.css';
@@ -19,16 +25,29 @@ import 'normalize.css/normalize.css';
 // Use the main stylesheet
 import '../styles/Application.scss';
 
+
+
 export default class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      serach_url: "",
+      query: "",
+      formated_query: "",
       myjson: {},
-      titles: []
+      titles: [],
+      doc_ids: []
     };
     this.setMyJSON = this.setMyJSON.bind(this);
     this.setTitles = this.setTitles.bind(this);
+    this.setQuery = this.setQuery.bind(this);
+    this.setDocIDs = this.setDocIDs.bind(this);
+    this.formatQuery = this.formatQuery.bind(this);
+  }
+
+  setQuery(query){
+    this.setState({
+      query: query
+    })
   }
 
   setMyJSON(myjson){
@@ -43,24 +62,62 @@ export default class Application extends React.Component {
     })
   }
 
+  setDocIDs(doc_ids){
+    this.setState({
+      doc_ids: doc_ids
+    })
+  }
+
+  formatQuery(query){
+    var regexp = new RegexpTokenizer({pattern: /[^A-Za-zА-Яа-я0-9_']+/});
+    var tokens = regexp.tokenize(query);
+    var new_query = "";
+    for (var i = 0; i < tokens.length; i++) {
+      new_query += tokens[i];
+      if (i != tokens.length-1) {
+        new_query += "%2B";
+      }
+    }
+    return new_query;
+  }
+
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <div id="app">
-          <NavigationBar
-            myjson={this.state.myjson}
-            title={this.state.titles}
-            setMyJSON={this.setMyJSON}
-            setTitles={this.setTitles}
-          />
+          <Route render={(props) => (
+            <NavigationBar
+              myjson={this.state.myjson}
+              titles={this.state.titles}
+              query={this.state.query}
+              doc_ids={this.state.doc_ids}
+              setTitles={this.setTitles}
+              setMyJSON={this.setMyJSON}
+              setQuery={this.setQuery}
+              setDocIDs={this.setDocIDs}
+
+              formatQuery={this.formatQuery}
+              {...props}
+              />
+            )}/>
           {console.log("Application state", this.state)}
           <Switch>
-              <Route exact path="/" render={(props) => (
-                <IndexPage
-                  myjson={this.state.myjson}
-                  title={this.state.titles}
-                  setMyJSON={this.setMyJSON}
+              <Route exact path="/" component={IndexPage}/>
+              <Route exact path="/results" render={(props) => (
+                <ResultsPage
+                  titles={this.state.titles}
+                  query={this.state.query}
+                  doc_ids={this.state.doc_ids}
                   setTitles={this.setTitles}
+                  setQuery={this.setQuery}
+                  setDocIDs={this.setDocIDs}
+                  {...props}
+                />
+              )}/>
+
+              <Route path="/game/:title" render={(props) => (
+                <GamePage
+                  formatQuery={this.formatQuery}
                   {...props}
                 />
               )}/>
@@ -68,7 +125,7 @@ export default class Application extends React.Component {
               <Route component={NotFoundPage} />
           </Switch>
         </div>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
