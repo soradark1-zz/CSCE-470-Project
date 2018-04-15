@@ -17,6 +17,7 @@ import GamePage from './GamePage.jsx';
 import IndexPage from './IndexPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import ResultsPage from './ResultsPage.jsx';
+var RegexpTokenizer = require('natural/lib/natural/tokenizers/regexp_tokenizer').RegexpTokenizer;
 
 // Normalize styling across all browsers
 import 'normalize.css/normalize.css';
@@ -24,11 +25,14 @@ import 'normalize.css/normalize.css';
 // Use the main stylesheet
 import '../styles/Application.scss';
 
+
+
 export default class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       query: "",
+      formated_query: "",
       myjson: {},
       titles: [],
       doc_ids: []
@@ -37,6 +41,7 @@ export default class Application extends React.Component {
     this.setTitles = this.setTitles.bind(this);
     this.setQuery = this.setQuery.bind(this);
     this.setDocIDs = this.setDocIDs.bind(this);
+    this.formatQuery = this.formatQuery.bind(this);
   }
 
   setQuery(query){
@@ -63,6 +68,19 @@ export default class Application extends React.Component {
     })
   }
 
+  formatQuery(query){
+    var regexp = new RegexpTokenizer({pattern: /[^A-Za-zА-Яа-я0-9_']+/});
+    var tokens = regexp.tokenize(query);
+    var new_query = "";
+    for (var i = 0; i < tokens.length; i++) {
+      new_query += tokens[i];
+      if (i != tokens.length-1) {
+        new_query += "%2B";
+      }
+    }
+    return new_query;
+  }
+
   render() {
     return (
       <HashRouter>
@@ -77,6 +95,8 @@ export default class Application extends React.Component {
               setMyJSON={this.setMyJSON}
               setQuery={this.setQuery}
               setDocIDs={this.setDocIDs}
+
+              formatQuery={this.formatQuery}
               {...props}
               />
             )}/>
@@ -85,36 +105,19 @@ export default class Application extends React.Component {
               <Route exact path="/" component={IndexPage}/>
               <Route exact path="/results" render={(props) => (
                 <ResultsPage
-                  myjson={this.state.myjson}
                   titles={this.state.titles}
                   query={this.state.query}
                   doc_ids={this.state.doc_ids}
                   setTitles={this.setTitles}
-                  setMyJSON={this.setMyJSON}
                   setQuery={this.setQuery}
                   setDocIDs={this.setDocIDs}
                   {...props}
                 />
               )}/>
-              <Route exact path="/results" render={(props) => (
-                <ResultsPage
-                  myjson={this.state.myjson}
-                  titles={this.state.titles}
-                  query={this.state.query}
-                  setTitles={this.setTitles}
-                  setMyJSON={this.setMyJSON}
-                  setQuery={this.setQuery}
-                  {...props}
-                />
-              )}/>
+
               <Route path="/game/:title" render={(props) => (
                 <GamePage
-                  myjson={this.state.myjson}
-                  titles={this.state.titles}
-                  query={this.state.query}
-                  setTitles={this.setTitles}
-                  setMyJSON={this.setMyJSON}
-                  setQuery={this.setQuery}
+                  formatQuery={this.formatQuery}
                   {...props}
                 />
               )}/>

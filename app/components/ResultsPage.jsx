@@ -9,9 +9,9 @@ export default class ResultsPage extends React.Component {
   }
 
   renderTitleLinks(){
-    var ranked_titles = this.rankTitles();
-    const listItems = ranked_titles.map((title) =>
-      <Link to={"/game/" + title[1]}>{title[1]}</Link>
+    //var ranked_titles = this.rankTitles();
+    const listItems = this.props.titles.map((title) =>
+      <Link to={"/game/" + title}>{title}</Link>
     );
     return listItems;
   }
