@@ -39,6 +39,8 @@ export default class GamePage extends React.Component {
 					<br/>
 					Score: {sentiment(reviews).score}
 					<br/>
+					Comparative: {sentiment(reviews).comparative}
+					<br/>
 					{reviews}
 				  </div>
         }
