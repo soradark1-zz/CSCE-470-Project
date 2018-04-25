@@ -7,7 +7,9 @@ export default class GamePage extends React.Component {
     super(props);
     this.state = {
       title: [],
-      reviews: []
+      reviews: [],
+	  score_avg: 0,
+	  comparative_avg: 0,
     }
   }
 
@@ -25,14 +27,38 @@ export default class GamePage extends React.Component {
      .catch((error) => {
         console.error(error);
       });
+    
   }
+  
+  getAverage(){
+	var reviews = this.state.reviews;
+	var score_avg = 0;
+	var comparative_avg = 0;
+	var total_rev = 0;	
+	for (var i = 0; i < reviews.length; i++) { 
+		if((i + 1) % 4 == 0){
+			score_avg += sentiment(reviews[i]).score;
+			comparative_avg += sentiment(reviews[i]).comparative;
+			total_rev = (i+1)/4;
+		}
+	}
+	score_avg = score_avg/total_rev;
+	comparative_avg = comparative_avg/total_rev;
+	
+	return ([score_avg,comparative_avg]);
+  }
+  
+
 
   renderReviews(){
     var reviews = this.state.reviews;
+
     const listItems = reviews.map((reviews, i) => {
         if((i + 1) % 4 == 0){
-
-           return <div>
+			score_avg += sentiment(reviews).score;
+			comparative_avg += sentiment(reviews).comparative;
+			total_rev = (i+1) / 4;
+			return <div>
 					<br/>
 					{(i+1) / 4}
 					
@@ -46,19 +72,20 @@ export default class GamePage extends React.Component {
         }
       }
     );
-	var r1 = sentiment('Cats are stupid.');
-	console.log(r1);
+
+	
     return listItems;
   }
 
 
 
   render() {
-    {console.log(this.state)}
     return (
       <div>
       <h1>{this.state.title}</h1>
-      {this.renderReviews()}
+	  Average Score: {this.getAverage()[0]}
+	  <br/>
+	  Average Comparative: {this.getAverage()[1]} 		  
 
       </div>
     );
