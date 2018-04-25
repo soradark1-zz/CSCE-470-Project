@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+var sentiment = require('sentiment');
 
 export default class GamePage extends React.Component {
   constructor(props) {
@@ -30,10 +31,21 @@ export default class GamePage extends React.Component {
     var reviews = this.state.reviews;
     const listItems = reviews.map((reviews, i) => {
         if((i + 1) % 4 == 0){
-           return <div><br/>{(i+1) / 4} {reviews}</div>
+
+           return <div>
+					<br/>
+					{(i+1) / 4}
+					
+					<br/>
+					Score: {sentiment(reviews).score}
+					<br/>
+					{reviews}
+				  </div>
         }
       }
     );
+	var r1 = sentiment('Cats are stupid.');
+	console.log(r1);
     return listItems;
   }
 
