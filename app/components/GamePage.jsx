@@ -102,9 +102,12 @@ findSimilar2(){
     return (
       <div>
       <h1>{this.state.title}</h1>
-      Average Score: {this.getAverage()[0]}
-	  <br/>
-	  Average Comparative: {this.getAverage()[1]} 
+      <h2>Sentiment Analysis Results</h2>
+      <div class="data">
+    	  Average Score: {this.getAverage()[0]}
+    	  <br/>
+    	  Average Comparative: {this.getAverage()[1]}
+      </div>
       <div>{this.renderTitleLinks()}</div>
       </div>
     );
