@@ -11,7 +11,11 @@ export default class ResultsPage extends React.Component {
   renderTitleLinks(){
     //var ranked_titles = this.rankTitles();
     const listItems = this.props.titles.map((title) =>
-      <Link to={"/game/" + title}>{title}</Link>
+      <Link
+       to={"/game/" + title}
+       class="game_link">
+        {title}
+      </Link>
     );
     return listItems;
   }
@@ -34,7 +38,7 @@ export default class ResultsPage extends React.Component {
   render() {
 
     return (
-      <div>
+      <div class="resultpage">
       <h1>Results Page</h1>
       {console.log("Index Props",this.props)}
       <div className="result-list">

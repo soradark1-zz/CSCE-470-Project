@@ -27,15 +27,15 @@ export default class GamePage extends React.Component {
      .catch((error) => {
         console.error(error);
       });
-    
+
   }
-  
+
   getAverage(){
 	var reviews = this.state.reviews;
 	var score_avg = 0;
 	var comparative_avg = 0;
-	var total_rev = 0;	
-	for (var i = 0; i < reviews.length; i++) { 
+	var total_rev = 0;
+	for (var i = 0; i < reviews.length; i++) {
 		if((i + 1) % 4 == 0){
 			score_avg += sentiment(reviews[i]).score;
 			comparative_avg += sentiment(reviews[i]).comparative;
@@ -44,10 +44,10 @@ export default class GamePage extends React.Component {
 	}
 	score_avg = score_avg/total_rev;
 	comparative_avg = comparative_avg/total_rev;
-	
-	return ([score_avg,comparative_avg]);
+
+	return ([score_avg, comparative_avg]);
   }
-  
+
 
 
   renderReviews(){
@@ -58,22 +58,22 @@ export default class GamePage extends React.Component {
 			score_avg += sentiment(reviews).score;
 			comparative_avg += sentiment(reviews).comparative;
 			total_rev = (i+1) / 4;
-			return <div>
-					<br/>
-					{(i+1) / 4}
-					
-					<br/>
-					Score: {sentiment(reviews).score}
-					<br/>
-					Comparative: {sentiment(reviews).comparative}
-					<br/>
-					{reviews}
-				  </div>
+			return  <div>
+      					<br/>
+      					{(i+1) / 4}
+
+      					<br/>
+      					Score: {sentiment(reviews).score}
+      					<br/>
+      					Comparative: {sentiment(reviews).comparative}
+      					<br/>
+      					{reviews}
+    				  </div>
         }
       }
     );
 
-	
+
     return listItems;
   }
 
@@ -81,11 +81,15 @@ export default class GamePage extends React.Component {
 
   render() {
     return (
-      <div>
+      <div class="gamepage">
       <h1>{this.state.title}</h1>
-	  Average Score: {this.getAverage()[0]}
-	  <br/>
-	  Average Comparative: {this.getAverage()[1]} 		  
+
+      <h2>Sentiment Analysis Results</h2>
+      <div class="data">
+    	  Average Score: {this.getAverage()[0]}
+    	  <br/>
+    	  Average Comparative: {this.getAverage()[1]}
+      </div>
 
       </div>
     );
