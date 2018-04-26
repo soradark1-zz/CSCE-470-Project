@@ -161,6 +161,9 @@ export default class GamePage extends React.PureComponent {
 
   renderTitleLinks(){
     //var ranked_titles = this.rankTitles();
+    if(this.state.recommendedTitles.length == 0){
+        return <h4>no similar games founded</h4>
+    }
     const listItems = this.state.recommendedTitles.map((title) =>
       <Link to={"/game/" + title} class="game_link">{title}<br/></Link>
     );
@@ -178,17 +181,32 @@ findSimilar2(){
      .then((response) => response.json())
      .then((responseJson) => {
         var docs = responseJson.response.docs;
+        var games = [];
 
-        for (var i = 0; i < docs.length && num <= 5; i++) {
+        for (var i = 0; i < docs.length; i++) {
           var target = docs[i].summary[0];
           var t = docs[i].title[0];
           var res = stringSimilarity.compareTwoStrings(source, target);
-          if(res >= 0.5 && this.state.title != t){
+          if(res >= 0.55 && this.state.title != t){
               console.log(docs[i].title[0] + res);
-              titles.push(docs[i].title[0]);
-              num++;
-              if(num > 5) break;
+//              titles.push(docs[i].title[0]);
+              var game = new Object();
+              game.name = docs[i].title[0];
+              game.score = res;
+              games.push(game);
+              
+//              num++;
+//              if(num > 5) break;
           }
+        }
+        games.sort(function(a,b){
+            if(a.score > b.score){
+                return -1;
+            }
+            return 1;
+        });
+        for(var i = 0; i < games.length && i < 10; i++){
+            titles.push(games[i].name);
         }
         this.setRecommendedTitles(titles);
 //        console.log(titles);
