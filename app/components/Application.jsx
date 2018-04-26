@@ -27,6 +27,8 @@ import 'normalize.css/normalize.css';
 // Use the main stylesheet
 import '../styles/Application.scss';
 
+import background from '../images/page_background.jpg';
+
 
 
 export default class Application extends React.Component {
@@ -71,13 +73,13 @@ export default class Application extends React.Component {
       doc_ids: doc_ids
     })
   }
-    
+
   setSummary(summary){
     this.setState({
       summary: summary
     })
   }
-    
+
 
   formatQuery(query){
     var regexp = new RegexpTokenizer({pattern: /[^A-Za-zА-Яа-я0-9_']+/});
@@ -112,9 +114,10 @@ export default class Application extends React.Component {
               {...props}
               />
             )}/>
-            
-          
+
+
           {console.log("Application state", this.state)}
+          <div class="switch_pages">
           <Switch>
               <Route exact path="/" component={IndexPage}/>
               <Route exact path="/results" render={(props) => (
@@ -129,7 +132,7 @@ export default class Application extends React.Component {
                   {...props}
                 />
               )}/>
-              
+
               <Route exact path="/recommendation" render={(props) => (
                 <RecommendationPage
                   titles={this.state.titles}
@@ -146,12 +149,14 @@ export default class Application extends React.Component {
               <Route path="/game/:title" render={(props) => (
                 <GamePage
                   formatQuery={this.formatQuery}
+                  location={props.location}
                   {...props}
                 />
               )}/>
               <Route exact path="/about" component={AboutPage}/>
               <Route component={NotFoundPage} />
           </Switch>
+          </div>
         </div>
       </HashRouter>
     );
