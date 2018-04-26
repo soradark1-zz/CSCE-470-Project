@@ -8,9 +8,26 @@ export default class GamePage extends React.Component {
     this.state = {
       title: [],
       reviews: [],
-  	  score_avg: 0,
-  	  comparative_avg: 0,
+      summary: "",
+      recommendedTitles: [],
+      score_avg: 0,
+
+	  comparative_avg: 0,
     }
+    this.setRecommendedTitles = this.setRecommendedTitles.bind(this);
+    this.setSummary = this.setSummary.bind(this);
+  }
+
+  setRecommendedTitles(titles){
+    this.setState({
+      recommendedTitles: titles
+    })
+  }
+
+  setSummary(summary){
+    this.setState({
+      summary : summary
+    })
   }
 
   componentWillMount(){
@@ -22,6 +39,8 @@ export default class GamePage extends React.Component {
      .then((responseJson) => {
        console.log("Game Page", responseJson.response.docs[0]);
        this.setState(responseJson.response.docs[0]);
+//       this.setSummary(responseJson.response.docs[0].summary[0]);
+        this.findSimilar2();
        return responseJson
      })
      .catch((error) => {
@@ -133,6 +152,44 @@ export default class GamePage extends React.Component {
     return listItems;
   }
 
+  renderTitleLinks(){
+    //var ranked_titles = this.rankTitles();
+    const listItems = this.state.recommendedTitles.map((title) =>
+      <Link to={"/game/" + title} class="game_link">{title}<br/></Link>
+    );
+    console.log(listItems);
+    return listItems;
+  }
+
+findSimilar2(){
+    var stringSimilarity = require('string-similarity');
+    var source = String(this.state.summary);
+    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title,summary&q=*:*&rows=1516'
+    var num = 0;
+    let titles = [];
+    fetch(url)
+     .then((response) => response.json())
+     .then((responseJson) => {
+        var docs = responseJson.response.docs;
+
+        for (var i = 0; i < docs.length && num <= 5; i++) {
+          var target = docs[i].summary[0];
+          var res = stringSimilarity.compareTwoStrings(source, target);
+          if(res >= 0.17){
+              console.log(docs[i].title[0] + res);
+              titles.push(docs[i].title[0]);
+              num++;
+              if(num > 5) break;
+          }
+        }
+        this.setRecommendedTitles(titles);
+//        console.log(titles);
+     })
+     .catch((error) => {
+        console.error(error);
+      });
+}
+
 
 
   render() {
@@ -151,8 +208,12 @@ export default class GamePage extends React.Component {
 
         <h3>Top Negative Words</h3>
         {this.renderWordList(this.getSentimentData()[3])}
-      </div>
 
+
+
+          <h3>Top Recommendations</h3>
+          {this.renderTitleLinks()}
+        </div>
       </div>
     );
   }
