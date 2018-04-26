@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+var sentiment = require('sentiment');
 
 export default class GamePage extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ export default class GamePage extends React.Component {
       summary: "",
       recommendedTitles: [],
       score_avg: 0,
+
 	  comparative_avg: 0,
     }
     this.setRecommendedTitles = this.setRecommendedTitles.bind(this);
@@ -44,16 +46,53 @@ export default class GamePage extends React.Component {
      .catch((error) => {
         console.error(error);
       });
+
   }
+
+  getAverage(){
+	var reviews = this.state.reviews;
+	var score_avg = 0;
+	var comparative_avg = 0;
+	var total_rev = 0;
+	for (var i = 0; i < reviews.length; i++) {
+		if((i + 1) % 4 == 0){
+			score_avg += sentiment(reviews[i]).score;
+			comparative_avg += sentiment(reviews[i]).comparative;
+			total_rev = (i+1)/4;
+		}
+	}
+	score_avg = score_avg/total_rev;
+	comparative_avg = comparative_avg/total_rev;
+
+	return ([score_avg, comparative_avg]);
+  }
+
+
 
   renderReviews(){
     var reviews = this.state.reviews;
+
     const listItems = reviews.map((reviews, i) => {
         if((i + 1) % 4 == 0){
-           return <div><br/>{(i+1) / 4} {reviews}</div>
+			score_avg += sentiment(reviews).score;
+			comparative_avg += sentiment(reviews).comparative;
+			total_rev = (i+1) / 4;
+			return  <div>
+      					<br/>
+      					{(i+1) / 4}
+
+      					<br/>
+      					Score: {sentiment(reviews).score}
+      					<br/>
+      					Comparative: {sentiment(reviews).comparative}
+      					<br/>
+      					{reviews}
+    				  </div>
         }
       }
     );
+
+
     return listItems;
   }
     
@@ -98,16 +137,17 @@ findSimilar2(){
 
 
   render() {
-    {console.log(this.state)}
     return (
-      <div>
+      <div class="gamepage">
       <h1>{this.state.title}</h1>
+        
       <h2>Sentiment Analysis Results</h2>
       <div class="data">
     	  Average Score: {this.getAverage()[0]}
     	  <br/>
     	  Average Comparative: {this.getAverage()[1]}
       </div>
+        
       <div>{this.renderTitleLinks()}</div>
       </div>
     );

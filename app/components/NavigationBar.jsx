@@ -69,20 +69,22 @@ export default class NavigationBar extends React.Component {
     return (
       <div className="navbar">
       {console.log("Nav Props",this.props)}
-        <Link to="/">
-          <h1>Home Page</h1>
+        <Link to="/" class="nav_link">
+          <h1>Home</h1>
         </Link>
-        <Link to="/about">
-          <h1>About Page</h1>
+        <div class="nav_center">
+          <input
+            type="text"
+            placeholder="Search"
+            value={this.props.query}
+            onChange={this.updateURL.bind(this)}
+            class="search_bar"
+          >
+          </input>
+        </div>
+        <Link to="/results" class="nav_link">
+          <h1>Results</h1>
         </Link>
-        <input
-          type="text"
-          placeholder="Search"
-          value={this.props.query}
-          onChange={this.updateURL.bind(this)}
-        >
-        </input>
-
 
       </div>
     );
