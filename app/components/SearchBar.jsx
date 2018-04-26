@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/NavigationBar.scss';
 import { Link, Redirect } from 'react-router-dom';
+import {findDOMNode} from 'react-dom';
 //https://gist.github.com/wassname/6bd1d58a31afbf960cbd35e3fc92be5a
 
 export default class NavigationBar extends React.Component {
@@ -24,34 +25,33 @@ export default class NavigationBar extends React.Component {
     }
     return ids;
   }
-  
+    
   getSummary(docs){
-      let summary = []
-      for (var i = 0; i < docs.length; i++) {
-      summary.push(docs[i].summary[0]);
-    }
+      let summary = ""
+      summary = docs[0].summary[0]
       
       return summary;
   }
 
+
   updateURL(event){
     event.preventDefault()
-    var query = event.target.value;
+    var query = findDOMNode(this.refs.searchBar).value.trim();
     this.props.setQuery(query); //http://localhost:8983/solr/ps4_games/select?fl=title,id&q=title:Kingdom
-    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title,id,summary&q=title:' + this.props.formatQuery(query) + '&rows=20'
+    var url = 'http://localhost:8983/solr/ps4_games/select?fl=title,summary,id&q=title:' + this.props.formatQuery(query) + '&rows=10'
 
     fetch(url)
      .then((response) => response.json())
      .then((responseJson) => {
-       console.log( responseJson.response.docs);
+       //console.log( responseJson.response.docs);
        this.props.setMyJSON(responseJson.response.docs);
        let titles = this.getTitles(this.props.myjson);
        let summary = this.getSummary(this.props.myjson);
        this.props.setSummary(summary);
        this.props.setTitles(titles);
-       let ids = this.getIds(this.props.myjson)
+       let ids = this.getIds(this.props.myjson);
        this.props.setDocIDs(ids);
-       this.props.history.push(`/results`)
+       this.props.history.push(`/recommendation`)
        return responseJson
      })
      .catch((error) => {
@@ -67,25 +67,16 @@ export default class NavigationBar extends React.Component {
 
   render() {
     return (
-      <div className="navbar">
+      <div>
       {console.log("Nav Props",this.props)}
-        <Link to="/" class="nav_link">
-          <h1>Home</h1>
-        </Link>
-        <div class="nav_center">
-          <input
-            type="text"
-            placeholder="Search"
-            value={this.props.query}
-            onChange={this.updateURL.bind(this)}
-            class="search_bar"
-          >
-          </input>
-        </div>
-        <Link to="/results" class="nav_link">
-          <h1>Results</h1>
-        </Link>
-
+        <input
+          ref="searchBar"
+          type="text"
+          placeholder="Search for recommendation"
+        />
+        <button onClick={this.updateURL.bind(this)}>
+          Search
+        </button>
       </div>
     );
   }

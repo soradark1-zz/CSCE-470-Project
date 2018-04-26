@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 
 import NavigationBar from './NavigationBar.jsx';
+import SearchBar from './SearchBar.jsx';
 
 // Load pages for routing
 import AboutPage from './AboutPage.jsx';
@@ -17,6 +18,7 @@ import GamePage from './GamePage.jsx';
 import IndexPage from './IndexPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import ResultsPage from './ResultsPage.jsx';
+//import RecommendationPage from './RecommendationPage.jsx'
 var RegexpTokenizer = require('natural/lib/natural/tokenizers/regexp_tokenizer').RegexpTokenizer;
 
 // Normalize styling across all browsers
@@ -35,13 +37,15 @@ export default class Application extends React.Component {
       formated_query: "",
       myjson: {},
       titles: [],
-      doc_ids: []
+      doc_ids: [],
+      summary: "",
     };
     this.setMyJSON = this.setMyJSON.bind(this);
     this.setTitles = this.setTitles.bind(this);
     this.setQuery = this.setQuery.bind(this);
     this.setDocIDs = this.setDocIDs.bind(this);
     this.formatQuery = this.formatQuery.bind(this);
+    this.setSummary = this.setSummary.bind(this);
   }
 
   setQuery(query){
@@ -67,6 +71,13 @@ export default class Application extends React.Component {
       doc_ids: doc_ids
     })
   }
+    
+  setSummary(summary){
+    this.setState({
+      summary: summary
+    })
+  }
+    
 
   formatQuery(query){
     var regexp = new RegexpTokenizer({pattern: /[^A-Za-zА-Яа-я0-9_']+/});
@@ -95,11 +106,14 @@ export default class Application extends React.Component {
               setMyJSON={this.setMyJSON}
               setQuery={this.setQuery}
               setDocIDs={this.setDocIDs}
+              setSummary={this.setSummary}
 
               formatQuery={this.formatQuery}
               {...props}
               />
             )}/>
+            
+          
           {console.log("Application state", this.state)}
           <Switch>
               <Route exact path="/" component={IndexPage}/>
@@ -109,6 +123,20 @@ export default class Application extends React.Component {
                   query={this.state.query}
                   doc_ids={this.state.doc_ids}
                   setTitles={this.setTitles}
+                  setSummary={this.setSummary}
+                  setQuery={this.setQuery}
+                  setDocIDs={this.setDocIDs}
+                  {...props}
+                />
+              )}/>
+              
+              <Route exact path="/recommendation" render={(props) => (
+                <RecommendationPage
+                  titles={this.state.titles}
+                  query={this.state.query}
+                  doc_ids={this.state.doc_ids}
+                  setTitles={this.setTitles}
+                  setSummary={this.setSummary}
                   setQuery={this.setQuery}
                   setDocIDs={this.setDocIDs}
                   {...props}
