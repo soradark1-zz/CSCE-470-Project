@@ -13,7 +13,8 @@ export default class ResultsPage extends React.Component {
     const listItems = this.props.titles.map((title) =>
       <Link
        to={"/game/" + title}
-       class="game_link">
+       class="game_link"
+       >
         {title}
       </Link>
     );

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 var sentiment = require('sentiment');
 
-export default class GamePage extends React.Component {
+export default class GamePage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,6 +18,13 @@ export default class GamePage extends React.Component {
     this.setSummary = this.setSummary.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.props.match.params.title
+    this.componentDidMount()
+  }
+
+
+
   setRecommendedTitles(titles){
     this.setState({
       recommendedTitles: titles
@@ -30,7 +37,7 @@ export default class GamePage extends React.Component {
     })
   }
 
-  componentWillMount(){
+  componentDidMount(){
     var query = this.props.match.params.title;
     var url = 'http://localhost:8983/solr/ps4_games/select?q=title:' + this.props.formatQuery(query) + '&rows=1'
 
