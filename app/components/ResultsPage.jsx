@@ -39,7 +39,7 @@ export default class ResultsPage extends React.Component {
 
     return (
       <div class="resultpage">
-      <h1>Results Page</h1>
+      <h1>Results</h1>
       {console.log("Index Props",this.props)}
       <div className="result-list">
         {this.renderTitleLinks()}

@@ -25,6 +25,8 @@ import 'normalize.css/normalize.css';
 // Use the main stylesheet
 import '../styles/Application.scss';
 
+import background from '../images/page_background.jpg';
+
 
 
 export default class Application extends React.Component {
@@ -101,6 +103,7 @@ export default class Application extends React.Component {
               />
             )}/>
           {console.log("Application state", this.state)}
+          <div class="switch_pages">
           <Switch>
               <Route exact path="/" component={IndexPage}/>
               <Route exact path="/results" render={(props) => (
@@ -124,6 +127,7 @@ export default class Application extends React.Component {
               <Route exact path="/about" component={AboutPage}/>
               <Route component={NotFoundPage} />
           </Switch>
+          </div>
         </div>
       </HashRouter>
     );
