@@ -99,7 +99,7 @@ export default class GamePage extends React.Component {
   renderTitleLinks(){
     //var ranked_titles = this.rankTitles();
     const listItems = this.state.recommendedTitles.map((title) =>
-      <Link to={"/game/" + title}>{title}</Link>
+      <Link to={"/game/" + title}>{title}<br/></Link>
     );
     console.log(listItems);
     return listItems;
@@ -146,9 +146,12 @@ findSimilar2(){
     	  Average Score: {this.getAverage()[0]}
     	  <br/>
     	  Average Comparative: {this.getAverage()[1]}
+          <br/>
       </div>
         
-      <div>{this.renderTitleLinks()}</div>
+      <div>
+          <br/>
+          {this.renderTitleLinks()}</div>
       </div>
     );
   }
