@@ -18,7 +18,7 @@ import GamePage from './GamePage.jsx';
 import IndexPage from './IndexPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import ResultsPage from './ResultsPage.jsx';
-import RecommendationPage from './RecommendationPage.jsx'
+//import RecommendationPage from './RecommendationPage.jsx'
 var RegexpTokenizer = require('natural/lib/natural/tokenizers/regexp_tokenizer').RegexpTokenizer;
 
 // Normalize styling across all browsers
@@ -38,7 +38,7 @@ export default class Application extends React.Component {
       myjson: {},
       titles: [],
       doc_ids: [],
-      summary: ""
+      summary: "",
     };
     this.setMyJSON = this.setMyJSON.bind(this);
     this.setTitles = this.setTitles.bind(this);
@@ -106,28 +106,14 @@ export default class Application extends React.Component {
               setMyJSON={this.setMyJSON}
               setQuery={this.setQuery}
               setDocIDs={this.setDocIDs}
+              setSummary={this.setSummary}
 
               formatQuery={this.formatQuery}
               {...props}
               />
             )}/>
             
-          <Route render={(props) => (
-            <SearchBar
-              myjson={this.state.myjson}
-              titles={this.state.titles}
-              query={this.state.query}
-              doc_ids={this.state.doc_ids}
-              setTitles={this.setTitles}
-              setMyJSON={this.setMyJSON}
-              setQuery={this.setQuery}
-              setDocIDs={this.setDocIDs}
-              setSummary={this.setSummary}
-                
-              formatQuery={this.formatQuery}
-              {...props}
-              />
-            )}/>
+          
           {console.log("Application state", this.state)}
           <Switch>
               <Route exact path="/" component={IndexPage}/>
@@ -137,6 +123,7 @@ export default class Application extends React.Component {
                   query={this.state.query}
                   doc_ids={this.state.doc_ids}
                   setTitles={this.setTitles}
+                  setSummary={this.setSummary}
                   setQuery={this.setQuery}
                   setDocIDs={this.setDocIDs}
                   {...props}
