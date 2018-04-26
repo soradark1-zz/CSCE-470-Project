@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import LevenshteinDistance from 'natural/lib/natural/distance/levenshtein_distance';
 
 export default class GamePage extends React.Component {
   constructor(props) {
@@ -9,7 +8,9 @@ export default class GamePage extends React.Component {
       title: [],
       reviews: [],
       summary: "",
-      recommendedTitles: []
+      recommendedTitles: [],
+      score_avg: 0,
+	  comparative_avg: 0,
     }
     this.setRecommendedTitles = this.setRecommendedTitles.bind(this);
     this.setSummary = this.setSummary.bind(this);
@@ -101,7 +102,9 @@ findSimilar2(){
     return (
       <div>
       <h1>{this.state.title}</h1>
-      <div>{this.renderReviews()}</div>
+      Average Score: {this.getAverage()[0]}
+	  <br/>
+	  Average Comparative: {this.getAverage()[1]} 
       <div>{this.renderTitleLinks()}</div>
       </div>
     );
