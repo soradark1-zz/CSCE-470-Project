@@ -118,8 +118,9 @@ findSimilar2(){
         
         for (var i = 0; i < docs.length && num <= 5; i++) {
           var target = docs[i].summary[0];
+          var t = docs[i].title[0];
           var res = stringSimilarity.compareTwoStrings(source, target);
-          if(res >= 0.17){
+          if(res >= 0.5 && this.state.title != t){
               console.log(docs[i].title[0] + res);
               titles.push(docs[i].title[0]);
               num++;
